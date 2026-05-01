@@ -15,9 +15,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-il(8xbt6kfe7*-e9%=1rik3aq_f*q9qrztxl(snq6e-civfxy1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['test.zastava-86.ru', 'localhost', '127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
@@ -140,6 +140,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:8080",
     "http://127.0.0.1:5173",
+    "https://test.zastava-86.ru",      # Добавляем HTTPS домен
+    "http://test.zastava-86.ru",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -156,3 +158,24 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+
+
+# Статика
+STATIC_URL = '/static/'
+STATIC_ROOT = '/app/static'
+
+# Медиа
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/app/media'
+
+
+
+# HTTPS Security Settings
+#SECURE_SSL_REDIRECT = True
+#SESSION_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
+#SECURE_BROWSER_XSS_FILTER = True
+#SECURE_CONTENT_TYPE_NOSNIFF = True
+#SECURE_HSTS_SECONDS = 31536000  # 1 год
+#SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+#SECURE_HSTS_PRELOAD = True
