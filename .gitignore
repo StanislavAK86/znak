@@ -35,4 +35,4 @@ desktop.ini
 # Secrets
 .env
 .secrets
-"@ | Out-File -FilePath .gitignore -Encoding UTF8
+"@ | Out-File -FilePath .gitignore -Encoding UTF8beckend/db.sqlite3
