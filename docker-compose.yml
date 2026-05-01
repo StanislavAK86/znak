@@ -5,13 +5,17 @@ services:
     restart: unless-stopped
     volumes:
       - ./beckend:/app
+      - sqlite_data:/app/beckend
       - static_volume:/app/static
       - media_volume:/app/media
     ports:
       - "8001:8000"
     environment:
       - DEBUG=False
-      - ALLOWED_HOSTS=test.zastava-86.ru,localhost
+      - DOCKER_ENV=True
+      - PRODUCTION=True
+      - ALLOWED_HOSTS=test.zastava-86.ru,localhost,127.0.0.1
+      - DATA_UPLOAD_MAX_SIZE=52428800
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000"]
       interval: 30s
