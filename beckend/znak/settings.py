@@ -18,7 +18,10 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Разрешенные хосты
 ALLOWED_HOSTS = ['test.zastava-86.ru', 'localhost', '127.0.0.1']
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://test.zastava-86.ru",
+    "http://test.zastava-86.ru",
+]
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -171,3 +174,8 @@ if os.getenv('PRODUCTION', 'False') == 'True':
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+
+
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
+DATA_UPLOAD_MAX_SIZE = 52428800  # 50 MB
