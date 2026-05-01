@@ -4,6 +4,41 @@
       <h1>Редактор шаблонов значки {{ currentDiameter }} мм · A4 {{ currentOrientation === 'landscape' ? 'Горизонт.' : 'Вертик.' }}</h1>
       
       <div class="diameter-selector">
+        <!-- 25 мм -->
+        <div class="size-group">
+          <label>25 мм:</label>
+          <button 
+            :class="['orient-btn', { active: currentDiameter === 25 && currentOrientation === 'portrait' }]"
+            @click="changeConfig(25, 'portrait')"
+          >
+            Вертик.
+          </button>
+          <button 
+            :class="['orient-btn', { active: currentDiameter === 25 && currentOrientation === 'landscape' }]"
+            @click="changeConfig(25, 'landscape')"
+          >
+            Горизонт.
+          </button>
+        </div>
+        
+        <!-- 32 мм -->
+        <div class="size-group">
+          <label>32 мм:</label>
+          <button 
+            :class="['orient-btn', { active: currentDiameter === 32 && currentOrientation === 'portrait' }]"
+            @click="changeConfig(32, 'portrait')"
+          >
+            Вертик.
+          </button>
+          <button 
+            :class="['orient-btn', { active: currentDiameter === 32 && currentOrientation === 'landscape' }]"
+            @click="changeConfig(32, 'landscape')"
+          >
+            Горизонт.
+          </button>
+        </div>
+        
+        <!-- 34 мм -->
         <div class="size-group">
           <label>34 мм:</label>
           <button 
@@ -20,6 +55,7 @@
           </button>
         </div>
         
+        <!-- 37 мм -->
         <div class="size-group">
           <label>37 мм:</label>
           <button 
@@ -36,6 +72,7 @@
           </button>
         </div>
         
+        <!-- 44 мм -->
         <div class="size-group">
           <label>44 мм:</label>
           <button 
@@ -52,6 +89,24 @@
           </button>
         </div>
         
+        <!-- 50 мм -->
+        <div class="size-group">
+          <label>50 мм:</label>
+          <button 
+            :class="['orient-btn', { active: currentDiameter === 50 && currentOrientation === 'portrait' }]"
+            @click="changeConfig(50, 'portrait')"
+          >
+            Вертик.
+          </button>
+          <button 
+            :class="['orient-btn', { active: currentDiameter === 50 && currentOrientation === 'landscape' }]"
+            @click="changeConfig(50, 'landscape')"
+          >
+            Горизонт.
+          </button>
+        </div>
+        
+        <!-- 58 мм -->
         <div class="size-group">
           <label>58 мм:</label>
           <button 
@@ -63,6 +118,23 @@
           <button 
             :class="['orient-btn', { active: currentDiameter === 58 && currentOrientation === 'landscape' }]"
             @click="changeConfig(58, 'landscape')"
+          >
+            Горизонт.
+          </button>
+        </div>
+        
+        <!-- 75 мм -->
+        <div class="size-group">
+          <label>75 мм:</label>
+          <button 
+            :class="['orient-btn', { active: currentDiameter === 75 && currentOrientation === 'portrait' }]"
+            @click="changeConfig(75, 'portrait')"
+          >
+            Вертик.
+          </button>
+          <button 
+            :class="['orient-btn', { active: currentDiameter === 75 && currentOrientation === 'landscape' }]"
+            @click="changeConfig(75, 'landscape')"
           >
             Горизонт.
           </button>
@@ -82,7 +154,8 @@
       </div>
       
       <div class="warning">
-        ⚠️ Ваши данные не сохраняются при обновлении. Будет чистый лист, обновление страницы приведёт к потере данных. Для сохранения данных зарегистрируйтесь и войдите  </div>
+        ⚠️ Ваши данные не сохраняются при обновлении. Будет чистый лист, обновление страницы приведёт к потере данных. Для сохранения данных зарегистрируйтесь и войдите
+      </div>
     </div>
 
     <div class="a4-page" :class="currentOrientation" ref="a4page">
@@ -116,6 +189,7 @@
       Размер круга: {{ circleSizePx }} px<br>
       Сетка: {{ gridCols }} x {{ gridRows }}<br>
       Всего кругов: {{ totalCircles }}<br>
+      Максимум на А4: {{ gridCols * gridRows }}<br>
       Загружено изображений: {{ Object.keys(images).length }}<br>
       Авторизован: {{ isAuthenticated ? 'Да' : 'Нет' }}
     </div>
@@ -206,14 +280,30 @@ export default {
       showProjectsModal: false,
       circleSizePx: 166,
       configs: {
-        '34_portrait': { cols: 4, rows: 5, total: 20 },
-        '34_landscape': { cols: 5, rows: 4, total: 20 },
-        '37_portrait': { cols: 3, rows: 4, total: 12 },
-        '37_landscape': { cols: 4, rows: 3, total: 12 },
-        '44_portrait': { cols: 3, rows: 4, total: 12 },
-        '44_landscape': { cols: 4, rows: 3, total: 12 },
-        '58_portrait': { cols: 2, rows: 3, total: 6 },
-        '58_landscape': { cols: 3, rows: 2, total: 6 }
+        // 25 мм - АБСОЛЮТНЫЙ МАКСИМУМ 88 кругов!
+        '25_portrait': { cols: 8, rows: 11, total: 88 },
+        '25_landscape': { cols: 11, rows: 8, total: 88 },
+        // 32 мм - 54 круга
+        '32_portrait': { cols: 6, rows: 9, total: 54 },
+        '32_landscape': { cols: 9, rows: 6, total: 54 },
+        // 34 мм - 48 кругов
+        '34_portrait': { cols: 6, rows: 8, total: 48 },
+        '34_landscape': { cols: 8, rows: 6, total: 48 },
+        // 37 мм - 35 кругов
+        '37_portrait': { cols: 5, rows: 7, total: 35 },
+        '37_landscape': { cols: 7, rows: 5, total: 35 },
+        // 44 мм - 24 круга
+        '44_portrait': { cols: 4, rows: 6, total: 24 },
+        '44_landscape': { cols: 6, rows: 4, total: 24 },
+        // 50 мм - 20 кругов
+        '50_portrait': { cols: 4, rows: 5, total: 20 },
+        '50_landscape': { cols: 5, rows: 4, total: 20 },
+        // 58 мм - 15 кругов
+        '58_portrait': { cols: 3, rows: 5, total: 15 },
+        '58_landscape': { cols: 5, rows: 3, total: 15 },
+        // 75 мм - 6 кругов
+        '75_portrait': { cols: 2, rows: 3, total: 6 },
+        '75_landscape': { cols: 3, rows: 2, total: 6 }
       }
     }
   },
@@ -327,8 +417,9 @@ export default {
   },
   methods: {
     updateCircleSize() {
+      // 1 мм ≈ 3.78 px при 96 DPI
       this.circleSizePx = Math.round(this.currentDiameter * 3.78)
-      console.log('Размер круга:', this.circleSizePx, 'для', this.currentDiameter, 'мм')
+      console.log('Размер круга:', this.circleSizePx, 'px для', this.currentDiameter, 'мм')
     },
     
     async checkAuth() {
