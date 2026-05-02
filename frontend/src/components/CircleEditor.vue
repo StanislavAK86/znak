@@ -1,256 +1,302 @@
 <template>
-  <div class="editor-container">
-    <div class="header">
-      <h1>Редактор шаблонов значки {{ currentDiameter }} мм · A4 {{ currentOrientation === 'landscape' ? 'Горизонт.' : 'Вертик.' }}</h1>
-      
-      <div class="diameter-selector">
-        <!-- 25 мм -->
-        <div class="size-group">
-          <label>25 мм:</label>
-          <button 
-            :class="['orient-btn', { active: currentDiameter === 25 && currentOrientation === 'portrait' }]"
-            @click="changeConfig(25, 'portrait')"
-          >
-            Вертик.
-          </button>
-          <button 
-            :class="['orient-btn', { active: currentDiameter === 25 && currentOrientation === 'landscape' }]"
-            @click="changeConfig(25, 'landscape')"
-          >
-            Горизонт.
-          </button>
-        </div>
-        
-        <!-- 32 мм -->
-        <div class="size-group">
-          <label>32 мм:</label>
-          <button 
-            :class="['orient-btn', { active: currentDiameter === 32 && currentOrientation === 'portrait' }]"
-            @click="changeConfig(32, 'portrait')"
-          >
-            Вертик.
-          </button>
-          <button 
-            :class="['orient-btn', { active: currentDiameter === 32 && currentOrientation === 'landscape' }]"
-            @click="changeConfig(32, 'landscape')"
-          >
-            Горизонт.
-          </button>
-        </div>
-        
-        <!-- 34 мм -->
-        <div class="size-group">
-          <label>34 мм:</label>
-          <button 
-            :class="['orient-btn', { active: currentDiameter === 34 && currentOrientation === 'portrait' }]"
-            @click="changeConfig(34, 'portrait')"
-          >
-            Вертик.
-          </button>
-          <button 
-            :class="['orient-btn', { active: currentDiameter === 34 && currentOrientation === 'landscape' }]"
-            @click="changeConfig(34, 'landscape')"
-          >
-            Горизонт.
-          </button>
-        </div>
-        
-        <!-- 37 мм -->
-        <div class="size-group">
-          <label>37 мм:</label>
-          <button 
-            :class="['orient-btn', { active: currentDiameter === 37 && currentOrientation === 'portrait' }]"
-            @click="changeConfig(37, 'portrait')"
-          >
-            Вертик.
-          </button>
-          <button 
-            :class="['orient-btn', { active: currentDiameter === 37 && currentOrientation === 'landscape' }]"
-            @click="changeConfig(37, 'landscape')"
-          >
-            Горизонт.
-          </button>
-        </div>
-        
-        <!-- 44 мм -->
-        <div class="size-group">
-          <label>44 мм:</label>
-          <button 
-            :class="['orient-btn', { active: currentDiameter === 44 && currentOrientation === 'portrait' }]"
-            @click="changeConfig(44, 'portrait')"
-          >
-            Вертик.
-          </button>
-          <button 
-            :class="['orient-btn', { active: currentDiameter === 44 && currentOrientation === 'landscape' }]"
-            @click="changeConfig(44, 'landscape')"
-          >
-            Горизонт.
-          </button>
-        </div>
-        
-        <!-- 50 мм -->
-        <div class="size-group">
-          <label>50 мм:</label>
-          <button 
-            :class="['orient-btn', { active: currentDiameter === 50 && currentOrientation === 'portrait' }]"
-            @click="changeConfig(50, 'portrait')"
-          >
-            Вертик.
-          </button>
-          <button 
-            :class="['orient-btn', { active: currentDiameter === 50 && currentOrientation === 'landscape' }]"
-            @click="changeConfig(50, 'landscape')"
-          >
-            Горизонт.
-          </button>
-        </div>
-        
-        <!-- 58 мм -->
-        <div class="size-group">
-          <label>58 мм:</label>
-          <button 
-            :class="['orient-btn', { active: currentDiameter === 58 && currentOrientation === 'portrait' }]"
-            @click="changeConfig(58, 'portrait')"
-          >
-            Вертик.
-          </button>
-          <button 
-            :class="['orient-btn', { active: currentDiameter === 58 && currentOrientation === 'landscape' }]"
-            @click="changeConfig(58, 'landscape')"
-          >
-            Горизонт.
-          </button>
-        </div>
-        
-        <!-- 75 мм -->
-        <div class="size-group">
-          <label>75 мм:</label>
-          <button 
-            :class="['orient-btn', { active: currentDiameter === 75 && currentOrientation === 'portrait' }]"
-            @click="changeConfig(75, 'portrait')"
-          >
-            Вертик.
-          </button>
-          <button 
-            :class="['orient-btn', { active: currentDiameter === 75 && currentOrientation === 'landscape' }]"
-            @click="changeConfig(75, 'landscape')"
-          >
-            Горизонт.
-          </button>
-        </div>
-      </div>
-      
-      <div class="actions">
-        <button class="pdf-btn" @click="exportPDF">Сохранить PDF</button>
-        <button class="print-btn" @click="printPage">Печать A4</button>
-        <button v-if="isAuthenticated" class="save-btn" @click="saveProjectManually">💾 Сохранить проект</button>
-        <button class="clear-btn" @click="clearAll">Очистить всё</button>
-        <button class="fill-btn" @click="openFillAllModal">Заполнить все</button>
-        <button class="new-btn" @click="createNewProject">➕ Новый проект</button>
-        <button class="projects-btn" @click="openProjectsModal">📁 Проекты</button>
-        <button class="profile-btn" @click="goToProfile">👤 Профиль</button>
-        <button v-if="!isAuthenticated" class="login-btn" @click="openAuthModal">👤 Войти</button>
-        <button v-else class="logout-btn" @click="logout">🚪 Выйти</button>
-      </div>
-      
-      <div class="warning">
-        ⚠️ Ваши данные не сохраняются при обновлении. Будет чистый лист, обновление страницы приведёт к потере данных. Для сохранения данных зарегистрируйтесь и войдите
-      </div>
+  <!-- ========== НОВЫЙ SEO-БЛОК ВВЕРХУ (видимый для поисковых роботов) ========== -->
+  <div>
+    <div class="seo-top">
+      <h1>Конструктор значков онлайн для печати на заказ</h1>
+      <p>
+        Бесплатный инструмент для создания макетов значков. Выбирайте диаметр 
+        <strong>от 25 до 75 мм</strong>, добавляйте любые изображения, 
+        настраивайте расположение на листе А4 и скачивайте готовый PDF для типографии.
+        Без регистрации, без водяных знаков.
+      </p>
+      <p>
+        <strong>Доступные размеры:</strong> 25 мм, 32 мм, 34 мм, 37 мм, 44 мм, 50 мм, 58 мм, 75 мм.
+        Поддерживается книжная и альбомная ориентация листа.
+      </p>
     </div>
 
-    <div class="a4-page" :class="currentOrientation" ref="a4page">
-      <div :style="wrapperStyle">
-        <div 
-          class="circle-cell"
-          :style="cellStyle"
-          v-for="(item, idx) in totalCircles"
-          :key="idx"
-          @click="openEditor(idx)"
-        >
-          <div class="outer-circle" :style="outerStyle"></div>
-          <div class="inner-circle" :style="innerStyle">
-            <img 
-              v-if="images[idx]" 
-              :src="images[idx]" 
-              class="circle-image"
-              @error="handleImageError(idx)"
+    <!-- ВАШ СУЩЕСТВУЮЩИЙ КОД (редактор) - НИЧЕГО НЕ МЕНЯЕМ -->
+    <div class="editor-container">
+      <div class="header">
+        <h1>Редактор шаблонов значки {{ currentDiameter }} мм · A4 {{ currentOrientation === 'landscape' ? 'Горизонт.' : 'Вертик.' }}</h1>
+        
+        <div class="diameter-selector">
+          <!-- 25 мм -->
+          <div class="size-group">
+            <label>25 мм:</label>
+            <button 
+              :class="['orient-btn', { active: currentDiameter === 25 && currentOrientation === 'portrait' }]"
+              @click="changeConfig(25, 'portrait')"
             >
-            <span v-else class="plus">+</span>
+              Вертик.
+            </button>
+            <button 
+              :class="['orient-btn', { active: currentDiameter === 25 && currentOrientation === 'landscape' }]"
+              @click="changeConfig(25, 'landscape')"
+            >
+              Горизонт.
+            </button>
+          </div>
+          
+          <!-- 32 мм -->
+          <div class="size-group">
+            <label>32 мм:</label>
+            <button 
+              :class="['orient-btn', { active: currentDiameter === 32 && currentOrientation === 'portrait' }]"
+              @click="changeConfig(32, 'portrait')"
+            >
+              Вертик.
+            </button>
+            <button 
+              :class="['orient-btn', { active: currentDiameter === 32 && currentOrientation === 'landscape' }]"
+              @click="changeConfig(32, 'landscape')"
+            >
+              Горизонт.
+            </button>
+          </div>
+          
+          <!-- 34 мм -->
+          <div class="size-group">
+            <label>34 мм:</label>
+            <button 
+              :class="['orient-btn', { active: currentDiameter === 34 && currentOrientation === 'portrait' }]"
+              @click="changeConfig(34, 'portrait')"
+            >
+              Вертик.
+            </button>
+            <button 
+              :class="['orient-btn', { active: currentDiameter === 34 && currentOrientation === 'landscape' }]"
+              @click="changeConfig(34, 'landscape')"
+            >
+              Горизонт.
+            </button>
+          </div>
+          
+          <!-- 37 мм -->
+          <div class="size-group">
+            <label>37 мм:</label>
+            <button 
+              :class="['orient-btn', { active: currentDiameter === 37 && currentOrientation === 'portrait' }]"
+              @click="changeConfig(37, 'portrait')"
+            >
+              Вертик.
+            </button>
+            <button 
+              :class="['orient-btn', { active: currentDiameter === 37 && currentOrientation === 'landscape' }]"
+              @click="changeConfig(37, 'landscape')"
+            >
+              Горизонт.
+            </button>
+          </div>
+          
+          <!-- 44 мм -->
+          <div class="size-group">
+            <label>44 мм:</label>
+            <button 
+              :class="['orient-btn', { active: currentDiameter === 44 && currentOrientation === 'portrait' }]"
+              @click="changeConfig(44, 'portrait')"
+            >
+              Вертик.
+            </button>
+            <button 
+              :class="['orient-btn', { active: currentDiameter === 44 && currentOrientation === 'landscape' }]"
+              @click="changeConfig(44, 'landscape')"
+            >
+              Горизонт.
+            </button>
+          </div>
+          
+          <!-- 50 мм -->
+          <div class="size-group">
+            <label>50 мм:</label>
+            <button 
+              :class="['orient-btn', { active: currentDiameter === 50 && currentOrientation === 'portrait' }]"
+              @click="changeConfig(50, 'portrait')"
+            >
+              Вертик.
+            </button>
+            <button 
+              :class="['orient-btn', { active: currentDiameter === 50 && currentOrientation === 'landscape' }]"
+              @click="changeConfig(50, 'landscape')"
+            >
+              Горизонт.
+            </button>
+          </div>
+          
+          <!-- 58 мм -->
+          <div class="size-group">
+            <label>58 мм:</label>
+            <button 
+              :class="['orient-btn', { active: currentDiameter === 58 && currentOrientation === 'portrait' }]"
+              @click="changeConfig(58, 'portrait')"
+            >
+              Вертик.
+            </button>
+            <button 
+              :class="['orient-btn', { active: currentDiameter === 58 && currentOrientation === 'landscape' }]"
+              @click="changeConfig(58, 'landscape')"
+            >
+              Горизонт.
+            </button>
+          </div>
+          
+          <!-- 75 мм -->
+          <div class="size-group">
+            <label>75 мм:</label>
+            <button 
+              :class="['orient-btn', { active: currentDiameter === 75 && currentOrientation === 'portrait' }]"
+              @click="changeConfig(75, 'portrait')"
+            >
+              Вертик.
+            </button>
+            <button 
+              :class="['orient-btn', { active: currentDiameter === 75 && currentOrientation === 'landscape' }]"
+              @click="changeConfig(75, 'landscape')"
+            >
+              Горизонт.
+            </button>
+          </div>
+        </div>
+        
+        <div class="actions">
+          <button class="pdf-btn" @click="exportPDF">Сохранить PDF</button>
+          <button class="print-btn" @click="printPage">Печать A4</button>
+          <button v-if="isAuthenticated" class="save-btn" @click="saveProjectManually">💾 Сохранить проект</button>
+          <button class="clear-btn" @click="clearAll">Очистить всё</button>
+          <button class="fill-btn" @click="openFillAllModal">Заполнить все</button>
+          <button class="new-btn" @click="createNewProject">➕ Новый проект</button>
+          <button class="projects-btn" @click="openProjectsModal">📁 Проекты</button>
+          <button class="profile-btn" @click="goToProfile">👤 Профиль</button>
+          <button v-if="!isAuthenticated" class="login-btn" @click="openAuthModal">👤 Войти</button>
+          <button v-else class="logout-btn" @click="logout">🚪 Выйти</button>
+        </div>
+        
+        <div class="warning">
+          ⚠️ Ваши данные не сохраняются при обновлении. Будет чистый лист, обновление страницы приведёт к потере данных. Для сохранения данных зарегистрируйтесь и войдите
+        </div>
+      </div>
+
+      <div class="a4-page" :class="currentOrientation" ref="a4page">
+        <div :style="wrapperStyle">
+          <div 
+            class="circle-cell"
+            :style="cellStyle"
+            v-for="(item, idx) in totalCircles"
+            :key="idx"
+            @click="openEditor(idx)"
+          >
+            <div class="outer-circle" :style="outerStyle"></div>
+            <div class="inner-circle" :style="innerStyle">
+              <img 
+                v-if="images[idx]" 
+                :src="images[idx]" 
+                class="circle-image"
+                @error="handleImageError(idx)"
+              >
+              <span v-else class="plus">+</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Отладочная панель -->
-    <div class="debug-panel">
-      <strong>Отладка:</strong><br>
-      Диаметр: {{ currentDiameter }} мм<br>
-      Ориентация: {{ currentOrientation === 'landscape' ? 'Альбомная' : 'Портретная' }}<br>
-      Размер круга: {{ circleSizePx }} px<br>
-      Сетка: {{ gridCols }} x {{ gridRows }}<br>
-      Всего кругов: {{ totalCircles }}<br>
-      Максимум на А4: {{ gridCols * gridRows }}<br>
-      Загружено изображений: {{ Object.keys(images).length }}<br>
-      Авторизован: {{ isAuthenticated ? 'Да' : 'Нет' }}
-    </div>
+      <!-- Отладочная панель -->
+      <div class="debug-panel">
+        <strong>Отладка:</strong><br>
+        Диаметр: {{ currentDiameter }} мм<br>
+        Ориентация: {{ currentOrientation === 'landscape' ? 'Альбомная' : 'Портретная' }}<br>
+        Размер круга: {{ circleSizePx }} px<br>
+        Сетка: {{ gridCols }} x {{ gridRows }}<br>
+        Всего кругов: {{ totalCircles }}<br>
+        Максимум на А4: {{ gridCols * gridRows }}<br>
+        Загружено изображений: {{ Object.keys(images).length }}<br>
+        Авторизован: {{ isAuthenticated ? 'Да' : 'Нет' }}
+      </div>
 
-    <!-- Модальное окно выбора файла (для одного круга) -->
-    <div class="modal" :class="{ show: modalVisible }" @click="closeModal">
-      <div class="modal-content" @click.stop>
-        <h3>Выберите изображение</h3>
-        <input 
-          type="file" 
-          ref="fileInput" 
-          accept="image/jpeg,image/png,image/gif,image/webp" 
-          @change="onImageSelect"
-        >
-        <div class="modal-buttons">
-          <button @click="closeModal">Отмена</button>
+      <!-- Модальное окно выбора файла (для одного круга) -->
+      <div class="modal" :class="{ show: modalVisible }" @click="closeModal">
+        <div class="modal-content" @click.stop>
+          <h3>Выберите изображение</h3>
+          <input 
+            type="file" 
+            ref="fileInput" 
+            accept="image/jpeg,image/png,image/gif,image/webp" 
+            @change="onImageSelect"
+          >
+          <div class="modal-buttons">
+            <button @click="closeModal">Отмена</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Модальное окно для заполнения всех кругов -->
-    <div class="modal" :class="{ show: fillAllModalVisible }" @click="closeFillAllModal">
-      <div class="modal-content" @click.stop>
-        <h3>Выберите изображение для всех значков</h3>
-        <input 
-          type="file" 
-          ref="fillAllFileInput" 
-          accept="image/jpeg,image/png,image/gif,image/webp" 
-          @change="onFillAllImageSelect"
-        >
-        <div class="modal-buttons">
-          <button @click="closeFillAllModal">Отмена</button>
+      <!-- Модальное окно для заполнения всех кругов -->
+      <div class="modal" :class="{ show: fillAllModalVisible }" @click="closeFillAllModal">
+        <div class="modal-content" @click.stop>
+          <h3>Выберите изображение для всех значков</h3>
+          <input 
+            type="file" 
+            ref="fillAllFileInput" 
+            accept="image/jpeg,image/png,image/gif,image/webp" 
+            @change="onFillAllImageSelect"
+          >
+          <div class="modal-buttons">
+            <button @click="closeFillAllModal">Отмена</button>
+          </div>
         </div>
       </div>
+
+      <!-- Редактор изображений -->
+      <ImageEditorModal
+        :show="showImageEditor"
+        :original-image="tempImageData"
+        @close="closeImageEditor"
+        @apply="applyEditedImage"
+      />
+
+      <!-- Модальные окна авторизации и проектов -->
+      <AuthModal
+        :show="showAuthModal"
+        @close="closeAuthModal"
+        @success="onAuthSuccess"
+      />
+      
+      <ProjectsModal
+        :show="showProjectsModal"
+        @close="closeProjectsModal"
+        @load-project="onLoadProject"
+      />
+      <div v-if="notification.show" :class="['notification', notification.type]">
+        {{ notification.message }}
+      </div>
     </div>
+    <!-- ========== КОНЕЦ ВАШЕГО СУЩЕСТВУЮЩЕГО КОДА ========== -->
 
-    <!-- Редактор изображений -->
-    <ImageEditorModal
-      :show="showImageEditor"
-      :original-image="tempImageData"
-      @close="closeImageEditor"
-      @apply="applyEditedImage"
-    />
-
-    <!-- Модальные окна авторизации и проектов -->
-    <AuthModal
-      :show="showAuthModal"
-      @close="closeAuthModal"
-      @success="onAuthSuccess"
-    />
-    
-    <ProjectsModal
-      :show="showProjectsModal"
-      @close="closeProjectsModal"
-      @load-project="onLoadProject"
-    />
-    <div v-if="notification.show" :class="['notification', notification.type]">
-      {{ notification.message }}
+    <!-- ========== НОВЫЙ SEO-БЛОК ВНИЗУ ========== -->
+    <div class="seo-bottom">
+      <h2>Как создать макет значков за 5 минут?</h2>
+      <ul>
+        <li><strong>Шаг 1:</strong> Выберите диаметр значка — доступны 8 размеров от 25 до 75 мм.</li>
+        <li><strong>Шаг 2:</strong> Нажмите на любой кружок и загрузите изображение (JPG, PNG, GIF).</li>
+        <li><strong>Шаг 3:</strong> При необходимости обрежьте или поверните фото во встроенном редакторе.</li>
+        <li><strong>Шаг 4:</strong> Используйте кнопку "Заполнить все", чтобы применить одно изображение ко всем значкам.</li>
+        <li><strong>Шаг 5:</strong> Сохраните проект (нужна регистрация) или сразу экспортируйте в PDF.</li>
+      </ul>
+      
+      <h2>Часто задаваемые вопросы</h2>
+      <ul>
+        <li><strong>Нужно ли платить за использование?</strong> — Нет, конструктор полностью бесплатный.</li>
+        <li><strong>Можно ли сохранить проект и вернуться к нему позже?</strong> — Да, зарегистрируйтесь и нажимайте "Сохранить проект".</li>
+        <li><strong>Какой формат изображений поддерживается?</strong> — JPG, PNG, GIF, WebP.</li>
+        <li><strong>Какие размеры значков доступны?</strong> — 25, 32, 34, 37, 44, 50, 58, 75 мм.</li>
+        <li><strong>Можно ли скачать результат для печати?</strong> — Да, кнопка "Сохранить PDF" или "Печать A4".</li>
+      </ul>
+      
+      <p>
+        <strong>Готовый макет можно сразу отправить в печать.</strong> 
+        Если у вас остались вопросы или нужна помощь — свяжитесь с нами через форму обратной связи.
+      </p>
     </div>
   </div>
+  <!-- ========== КОНЕЦ НОВЫХ БЛОКОВ ========== -->
 </template>
 
 <script>
@@ -1112,6 +1158,63 @@ export default {
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+.seo-top, .seo-bottom {
+  max-width: 1200px;
+  margin: 0 auto 30px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.seo-top h1 {
+  font-size: 28px;
+  color: #333;
+  margin: 0 0 15px 0;
+}
+
+.seo-top p, .seo-bottom p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #555;
+  margin: 10px 0;
+}
+
+.seo-bottom h2 {
+  font-size: 22px;
+  color: #333;
+  margin: 20px 0 10px 0;
+}
+
+.seo-bottom ul {
+  margin: 10px 0 20px 20px;
+}
+
+.seo-bottom li {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #555;
+  margin: 8px 0;
+}
+
+@media print {
+  .seo-top, .seo-bottom {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .seo-top h1 {
+    font-size: 22px;
+  }
+  .seo-bottom h2 {
+    font-size: 18px;
+  }
+  .seo-top p, .seo-bottom li {
+    font-size: 14px;
   }
 }
 

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /profile
+Disallow: /auth
+
+Sitemap: https://test.zastava-86.ru/sitemap.xml
+Host: https://test.zastava-86.ru

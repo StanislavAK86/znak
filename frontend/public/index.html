@@ -1,19 +1,54 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="ru">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    
+    <!-- ========== ОСНОВНЫЕ SEO-ТЕГИ ========== -->
+    <title>Конструктор значков онлайн | Создать макет для печати от 25 до 75 мм</title>
+    <meta name="description" content="Бесплатный конструктор значков. Выбирайте размер от 25 до 75 мм, добавляйте изображения, меняйте ориентацию листа. Скачивайте PDF для типографии без регистрации.">
+    <meta name="keywords" content="конструктор значков, создать значок онлайн, макет значков, значки на заказ, редактор бейджей, печать значков, значки 58 мм, значки 44 мм">
+    <meta name="robots" content="index, follow">
+    
+    <!-- ========== OPEN GRAPH (для соцсетей) ========== -->
+    <meta property="og:title" content="Конструктор значков для печати">
+    <meta property="og:description" content="Создайте макет значков за 5 минут. Выберите размер 25-75 мм, добавьте фото, скачайте PDF. Бесплатно.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://test.zastava-86.ru/">
+    <meta property="og:image" content="https://test.zastava-86.ru/og-image.jpg">
+    <meta property="og:site_name" content="Конструктор значков">
+    
+    <!-- ========== CANONICAL ========== -->
+    <link rel="canonical" href="https://test.zastava-86.ru/">
+    
+    <!-- ========== FAVICON ========== -->
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="<%= BASE_URL %>favicon.ico">
+    
+    <!-- ========== ДОПОЛНИТЕЛЬНЫЕ ТЕГИ ========== -->
+    <meta name="theme-color" content="#4CAF50">
+    <meta name="format-detection" content="telephone=no">
+    
     <title>Значки</title>
   </head>
   <body>
+    <!-- Сообщение для пользователей с отключенным JS -->
     <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+        <h1>Конструктор значков требует включения JavaScript</h1>
+        <p>Пожалуйста, включите JavaScript в вашем браузере, чтобы использовать все возможности конструктора.</p>
+        <hr>
+        <p>Вы также можете заказать печать значков, связавшись с нами через форму обратной связи.</p>
+      </div>
     </noscript>
+    
+    <!-- Контейнер для Vue-приложения -->
     <div id="app"></div>
+    
     <!-- built files will be auto injected -->
-     <!-- Yandex.Metrika counter -->
+    
+    <!-- ========== Яндекс.Метрика (оставляем как есть) ========== -->
     <script type="text/javascript">
         (function(m,e,t,r,i,k,a){
             m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -22,9 +57,42 @@
             k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
         })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=109006772', 'ym');
 
-        ym(109006772, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+        ym(109006772, 'init', {
+          ssr: true, 
+          webvisor: true, 
+          clickmap: true, 
+          ecommerce: "dataLayer", 
+          referrer: document.referrer, 
+          url: location.href, 
+          accurateTrackBounce: true, 
+          trackLinks: true
+        });
     </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/109006772" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->
+    <noscript>
+      <div>
+        <img src="https://mc.yandex.ru/watch/109006772" style="position:absolute; left:-9999px;" alt="" />
+      </div>
+    </noscript>
+    <!-- /Яндекс.Метрика -->
+    
+    <!-- ========== СТРУКТУРИРОВАННЫЕ ДАННЫЕ (Schema.org) ========== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Конструктор значков",
+      "description": "Бесплатный онлайн-конструктор для создания макетов значков любого размера. Поддерживаются диаметры от 25 до 75 мм, экспорт в PDF.",
+      "applicationCategory": "DesignApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "RUB"
+      },
+      "featureList": "Выбор диаметра значка (25, 32, 34, 37, 44, 50, 58, 75 мм), загрузка изображений, обрезка фото, экспорт в PDF, сохранение проектов после регистрации",
+      "url": "https://test.zastava-86.ru/",
+      "screenshot": "https://test.zastava-86.ru/screenshot.jpg"
+    }
+    </script>
   </body>
 </html>
