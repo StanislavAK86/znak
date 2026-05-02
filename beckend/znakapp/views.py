@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth.models import User
 from django.db.models import Count, Q
 from .models import Category, Sign, Quiz, QuizResult, BadgeProject
+from django.http import HttpResponse
 from .serializers import (
     UserSerializer, CategorySerializer, SignSerializer,
     QuizSerializer, QuizResultSerializer,
@@ -253,6 +254,12 @@ class BadgeProjectDetail(generics.RetrieveUpdateDestroyAPIView):
 @permission_classes([IsAuthenticated])
 def generate_badge_pdf(request, project_id):
     """Генерация PDF для печати значков"""
+    from reportlab.lib.utils import ImageReader
+    from PIL import Image
+    import base64
+    from io import BytesIO
+    import math
+    
     try:
         project = BadgeProject.objects.get(id=project_id, user=request.user)
         
@@ -266,7 +273,8 @@ def generate_badge_pdf(request, project_id):
         c = canvas.Canvas(buffer, pagesize=pagesize)
         width, height = pagesize
         
-        # Конвертируем мм в пункты
+        # Конвертируем мм в пункты (1 мм ≈ 2.83465 pt)
+        mm = 2.83465
         margin = 15 * mm
         d = project.diameter_mm * mm
         
@@ -343,13 +351,38 @@ def generate_badge_pdf(request, project_id):
                 img_data = project.shapes_data.get(str(idx))
                 if img_data and img_data != 'null' and not img_data.startswith('null'):
                     try:
+                        # Проверяем и декодируем base64 изображение
                         if img_data.startswith('data:image'):
+                            # Извлекаем base64 данные
                             img_base64 = img_data.split(',')[1]
-                            img_bytes = base64.b64decode(img_base64)
-                            img_buffer = BytesIO(img_bytes)
-                            c.drawInlineImage(img_buffer, x, y, d, d)
+                        else:
+                            img_base64 = img_data
+                        
+                        # Декодируем base64
+                        img_bytes = base64.b64decode(img_base64)
+                        img_buffer = BytesIO(img_bytes)
+                        
+                        # Открываем через PIL для конвертации
+                        pil_img = Image.open(img_buffer)
+                        
+                        # Конвертируем в RGB если нужно
+                        if pil_img.mode in ('RGBA', 'LA', 'P'):
+                            pil_img = pil_img.convert('RGB')
+                        
+                        # Сохраняем в JPEG
+                        jpeg_buffer = BytesIO()
+                        pil_img.save(jpeg_buffer, format='JPEG', quality=85)
+                        jpeg_buffer.seek(0)
+                        
+                        # Используем ImageReader
+                        img_reader = ImageReader(jpeg_buffer)
+                        
+                        # Рисуем изображение внутри формы (с отступами)
+                        padding = d * 0.1
+                        c.drawImage(img_reader, x + padding, y + padding, 
+                                   d - 2*padding, d - 2*padding, mask='auto')
                     except Exception as e:
-                        print(f"Ошибка загрузки изображения: {e}")
+                        print(f"Ошибка загрузки изображения для индекса {idx}: {e}")
                 
                 c.restoreState()
                 c.stroke()
@@ -357,14 +390,19 @@ def generate_badge_pdf(request, project_id):
         c.save()
         buffer.seek(0)
         
-        response = Response({
-            'pdf': base64.b64encode(buffer.read()).decode(),
-            'filename': f'badge_project_{project.id}.pdf'
-        })
+        # Возвращаем PDF как файл
+        response = HttpResponse(buffer.getvalue(), content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="badge_project_{project.id}.pdf"'
         return response
     
     except BadgeProject.DoesNotExist:
         return Response(
             {'error': 'Проект не найден'},
             status=status.HTTP_404_NOT_FOUND
+        )
+    except Exception as e:
+        print(f"Ошибка генерации PDF: {e}")
+        return Response(
+            {'error': f'Ошибка генерации PDF: {str(e)}'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )

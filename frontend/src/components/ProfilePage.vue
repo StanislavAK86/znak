@@ -58,9 +58,9 @@
             <button class="action-btn edit" @click="editProject(project)" title="Редактировать">
               ✏️
             </button>
-            <button class="action-btn download" @click="downloadProjectPDF(project)" title="Скачать PDF">
-              📄
-            </button>
+            <!-- <button class="action-btn download" @click="downloadProjectPDF(project)" title="Скачать PDF">
+              📄 
+            </button>-->
             <button class="action-btn delete" @click="deleteProject(project)" title="Удалить">
               🗑️
             </button>
