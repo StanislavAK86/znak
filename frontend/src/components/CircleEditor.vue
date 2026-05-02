@@ -144,6 +144,7 @@
       <div class="actions">
         <button class="pdf-btn" @click="exportPDF">Сохранить PDF</button>
         <button class="print-btn" @click="printPage">Печать A4</button>
+        <button v-if="isAuthenticated" class="save-btn" @click="saveProjectManually">💾 Сохранить проект</button>
         <button class="clear-btn" @click="clearAll">Очистить всё</button>
         <button class="fill-btn" @click="openFillAllModal">Заполнить все</button>
         <button class="new-btn" @click="createNewProject">➕ Новый проект</button>
@@ -246,6 +247,9 @@
       @close="closeProjectsModal"
       @load-project="onLoadProject"
     />
+    <div v-if="notification.show" :class="['notification', notification.type]">
+      {{ notification.message }}
+    </div>
   </div>
 </template>
 
@@ -279,6 +283,11 @@ export default {
       showAuthModal: false,
       showProjectsModal: false,
       circleSizePx: 166,
+      notification: {
+        show: false,
+        message: '',
+        type: 'success' // success, error, warning
+      },
       configs: {
         // 25 мм - АБСОЛЮТНЫЙ МАКСИМУМ 88 кругов!
         '25_portrait': { cols: 8, rows: 11, total: 88 },
@@ -416,6 +425,18 @@ export default {
     }, { deep: true })
   },
   methods: {
+
+    showNotification(message, type = 'success') {
+      this.notification = {
+        show: true,
+        message: message,
+        type: type
+      }
+      setTimeout(() => {
+        this.notification.show = false
+      }, 3000)
+    },
+
     updateCircleSize() {
       // 1 мм ≈ 3.78 px при 96 DPI
       this.circleSizePx = Math.round(this.currentDiameter * 3.78)
@@ -442,7 +463,7 @@ export default {
       this.currentOrientation = orientation
       this.updateCircleSize()
       this.images = {}
-      this.saveToBackend()
+      //this.saveToBackend()
     },
     
     openEditor(index) {
@@ -558,10 +579,12 @@ export default {
           this.images = newImages
         }
         console.log('Изображение применено для индекса:', this.tempImageIndex, 'режим:', data.fillMode)
-        this.saveToBackend()
+        //this.saveToBackend()
         this.$forceUpdate()
+        console.log('Изображение добавлено. Нажмите "Сохранить" для сохранения проекта.')
       }
       this.closeImageEditor()
+      
     },
     
     onFillAllImageSelect(e) {
@@ -602,7 +625,38 @@ export default {
       const newImages = { ...this.images }
       delete newImages[index]
       this.images = newImages
-      this.saveToBackend()
+      //this.saveToBackend()
+    },
+
+    async saveProjectManually() {
+      // Проверка авторизации
+      if (!this.isAuthenticated) {
+        this.showNotification('⚠️ Для сохранения проекта необходимо войти в аккаунт!', 'warning')
+        this.openAuthModal()
+        return
+      }
+      
+      const saveBtn = document.querySelector('.save-btn')
+      if (saveBtn) {
+        const originalText = saveBtn.textContent
+        saveBtn.textContent = '💾 Сохранение...'
+        saveBtn.disabled = true
+        
+        try {
+          const result = await this.saveToBackend()
+          if (result && result.success) {
+            this.showNotification('✅ Проект успешно сохранён!', 'success')
+          } else {
+            this.showNotification('⚠️ Ошибка при сохранении проекта', 'error')
+          }
+        } catch (error) {
+          console.error('Ошибка сохранения:', error)
+          this.showNotification('❌ Ошибка при сохранении проекта', 'error')
+        } finally {
+          saveBtn.textContent = originalText
+          saveBtn.disabled = false
+        }
+      }
     },
     
     async exportPDF() {
@@ -663,6 +717,12 @@ export default {
     },
     
     async saveToBackend() {
+      // Проверка авторизации
+      if (!this.isAuthenticated) {
+        console.log('Сохранение доступно только авторизованным пользователям')
+        return { success: false, local: false, error: 'Not authenticated' }
+      }
+      
       const badgeStore = useBadgeStore()
       badgeStore.images = this.images
       badgeStore.currentDiameter = this.currentDiameter
@@ -678,14 +738,17 @@ export default {
       if (result.success && !result.local) {
         console.log('Проект сохранён на сервере')
         await badgeStore.loadProjects()
+        return { success: true, local: false }
       } else if (result.local) {
         console.log('Проект сохранён локально (не авторизован)')
+        return { success: false, local: true, error: 'Not authenticated' }
       }
+      return { success: false, local: false }
     },
     
     onAuthSuccess() {
       this.showAuthModal = false
-      this.saveToBackend()
+      //this.saveToBackend()
       this.loadProjectsFromServer()
     },
     
@@ -999,4 +1062,57 @@ export default {
     box-shadow: none;
   }
 }
+
+.save-btn {
+  background: #28a745;
+  color: white;
+}
+
+.save-btn:hover {
+  background: #218838;
+}
+
+.save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Уведомления */
+.notification {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  z-index: 9999;
+  animation: slideIn 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.notification.success {
+  background-color: #28a745;
+}
+
+.notification.error {
+  background-color: #dc3545;
+}
+
+.notification.warning {
+  background-color: #ffc107;
+  color: #333;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 </style>
