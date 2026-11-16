@@ -79,7 +79,7 @@ class SiteVisitSerializer(serializers.ModelSerializer):
     """Сериализатор посещения"""
     username = serializers.CharField(source='user.username', read_only=True)
 
-    class Mete:
+    class Meta:
         model = SiteVisit
         fields = [
             'id', 'ip_address', 'user', 'username', 'path', 'method',
@@ -108,7 +108,7 @@ class FeedbackCreateSerializer(serializers.ModelSerializer):
         model = Feedback
         fields = ['name', 'email', 'phone', 'category', 'subject', 'message']
 
-    def validate_messadge(self, value):
+    def validate_message(self, value):
         if len(value) < 10:
             raise serializers.ValidationError('Сообщение должно быть не мение 10 символов')
         return value

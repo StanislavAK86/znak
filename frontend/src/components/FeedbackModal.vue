@@ -103,6 +103,8 @@ export default {
       this.loading = true
 
       try {
+        console.log('API_URL =', API_URL)
+        console.log('URL запроса =', `${API_URL}/feedback/`)
         await axios.post(`${API_URL}/feedback/`, this.form)
         this.success = '✅ Сообщение отправлено! Мы ответим в ближайшее время.'
         setTimeout(() => {
