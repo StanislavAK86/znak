@@ -4,8 +4,8 @@
     <div class="seo-top">
       <h1>Конструктор значков онлайн для печати на заказ</h1>
       <p>
-        Бесплатный инструмент для создания макетов значков. Выбирайте диаметр 
-        <strong>от 25 до 75 мм</strong>, добавляйте любые изображения, 
+        Бесплатный инструмент для создания макетов значков. Выбирайте диаметр
+        <strong>от 25 до 75 мм</strong>, добавляйте любые изображения,
         настраивайте расположение на листе А4 и скачивайте готовый PDF для типографии.
         Без регистрации, без водяных знаков.
       </p>
@@ -19,137 +19,137 @@
     <div class="editor-container">
       <div class="header">
         <h1>Редактор шаблонов значки {{ currentDiameter }} мм · A4 {{ currentOrientation === 'landscape' ? 'Горизонт.' : 'Вертик.' }}</h1>
-        
+
         <div class="diameter-selector">
           <!-- 25 мм -->
           <div class="size-group">
             <label>25 мм:</label>
-            <button 
+            <button
               :class="['orient-btn', { active: currentDiameter === 25 && currentOrientation === 'portrait' }]"
               @click="changeConfig(25, 'portrait')"
             >
               Вертик.
             </button>
-            <button 
+            <button
               :class="['orient-btn', { active: currentDiameter === 25 && currentOrientation === 'landscape' }]"
               @click="changeConfig(25, 'landscape')"
             >
               Горизонт.
             </button>
           </div>
-          
+
           <!-- 32 мм -->
           <div class="size-group">
             <label>32 мм:</label>
-            <button 
+            <button
               :class="['orient-btn', { active: currentDiameter === 32 && currentOrientation === 'portrait' }]"
               @click="changeConfig(32, 'portrait')"
             >
               Вертик.
             </button>
-            <button 
+            <button
               :class="['orient-btn', { active: currentDiameter === 32 && currentOrientation === 'landscape' }]"
               @click="changeConfig(32, 'landscape')"
             >
               Горизонт.
             </button>
           </div>
-          
+
           <!-- 34 мм -->
           <div class="size-group">
             <label>34 мм:</label>
-            <button 
+            <button
               :class="['orient-btn', { active: currentDiameter === 34 && currentOrientation === 'portrait' }]"
               @click="changeConfig(34, 'portrait')"
             >
               Вертик.
             </button>
-            <button 
+            <button
               :class="['orient-btn', { active: currentDiameter === 34 && currentOrientation === 'landscape' }]"
               @click="changeConfig(34, 'landscape')"
             >
               Горизонт.
             </button>
           </div>
-          
+
           <!-- 37 мм -->
           <div class="size-group">
             <label>37 мм:</label>
-            <button 
+            <button
               :class="['orient-btn', { active: currentDiameter === 37 && currentOrientation === 'portrait' }]"
               @click="changeConfig(37, 'portrait')"
             >
               Вертик.
             </button>
-            <button 
+            <button
               :class="['orient-btn', { active: currentDiameter === 37 && currentOrientation === 'landscape' }]"
               @click="changeConfig(37, 'landscape')"
             >
               Горизонт.
             </button>
           </div>
-          
+
           <!-- 44 мм -->
           <div class="size-group">
             <label>44 мм:</label>
-            <button 
+            <button
               :class="['orient-btn', { active: currentDiameter === 44 && currentOrientation === 'portrait' }]"
               @click="changeConfig(44, 'portrait')"
             >
               Вертик.
             </button>
-            <button 
+            <button
               :class="['orient-btn', { active: currentDiameter === 44 && currentOrientation === 'landscape' }]"
               @click="changeConfig(44, 'landscape')"
             >
               Горизонт.
             </button>
           </div>
-          
+
           <!-- 50 мм -->
           <div class="size-group">
             <label>50 мм:</label>
-            <button 
+            <button
               :class="['orient-btn', { active: currentDiameter === 50 && currentOrientation === 'portrait' }]"
               @click="changeConfig(50, 'portrait')"
             >
               Вертик.
             </button>
-            <button 
+            <button
               :class="['orient-btn', { active: currentDiameter === 50 && currentOrientation === 'landscape' }]"
               @click="changeConfig(50, 'landscape')"
             >
               Горизонт.
             </button>
           </div>
-          
+
           <!-- 58 мм -->
           <div class="size-group">
             <label>58 мм:</label>
-            <button 
+            <button
               :class="['orient-btn', { active: currentDiameter === 58 && currentOrientation === 'portrait' }]"
               @click="changeConfig(58, 'portrait')"
             >
               Вертик.
             </button>
-            <button 
+            <button
               :class="['orient-btn', { active: currentDiameter === 58 && currentOrientation === 'landscape' }]"
               @click="changeConfig(58, 'landscape')"
             >
               Горизонт.
             </button>
           </div>
-          
+
           <!-- 75 мм -->
           <div class="size-group">
             <label>75 мм:</label>
-            <button 
+            <button
               :class="['orient-btn', { active: currentDiameter === 75 && currentOrientation === 'portrait' }]"
               @click="changeConfig(75, 'portrait')"
             >
               Вертик.
             </button>
-            <button 
+            <button
               :class="['orient-btn', { active: currentDiameter === 75 && currentOrientation === 'landscape' }]"
               @click="changeConfig(75, 'landscape')"
             >
@@ -157,7 +157,7 @@
             </button>
           </div>
         </div>
-        
+
         <div class="actions">
           <button class="pdf-btn" @click="exportPDF">Сохранить PDF</button>
           <button class="print-btn" @click="printPage">Печать A4</button>
@@ -167,10 +167,13 @@
           <button class="new-btn" @click="createNewProject">➕ Новый проект</button>
           <button class="projects-btn" @click="openProjectsModal">📁 Проекты</button>
           <button class="profile-btn" @click="goToProfile">👤 Профиль</button>
+          <!-- ========== КНОПКА ОБРАТНОЙ СВЯЗИ ========== -->
+          <button class="feedback-btn" @click="showFeedbackModal = true">📬 Обратная связь</button>
+          <!-- ========================================== -->
           <button v-if="!isAuthenticated" class="login-btn" @click="openAuthModal">👤 Войти</button>
           <button v-else class="logout-btn" @click="logout">🚪 Выйти</button>
         </div>
-        
+
         <div class="warning">
           ⚠️ Ваши данные не сохраняются при обновлении. Будет чистый лист, обновление страницы приведёт к потере данных. Для сохранения данных зарегистрируйтесь и войдите
         </div>
@@ -178,7 +181,7 @@
 
       <div class="a4-page" :class="currentOrientation" ref="a4page">
         <div :style="wrapperStyle">
-          <div 
+          <div
             class="circle-cell"
             :style="cellStyle"
             v-for="(item, idx) in totalCircles"
@@ -187,9 +190,9 @@
           >
             <div class="outer-circle" :style="outerStyle"></div>
             <div class="inner-circle" :style="innerStyle">
-              <img 
-                v-if="images[idx]" 
-                :src="images[idx]" 
+              <img
+                v-if="images[idx]"
+                :src="images[idx]"
                 class="circle-image"
                 @error="handleImageError(idx)"
               >
@@ -216,10 +219,10 @@
       <div class="modal" :class="{ show: modalVisible }" @click="closeModal">
         <div class="modal-content" @click.stop>
           <h3>Выберите изображение</h3>
-          <input 
-            type="file" 
-            ref="fileInput" 
-            accept="image/jpeg,image/png,image/gif,image/webp" 
+          <input
+            type="file"
+            ref="fileInput"
+            accept="image/jpeg,image/png,image/gif,image/webp"
             @change="onImageSelect"
           >
           <div class="modal-buttons">
@@ -232,10 +235,10 @@
       <div class="modal" :class="{ show: fillAllModalVisible }" @click="closeFillAllModal">
         <div class="modal-content" @click.stop>
           <h3>Выберите изображение для всех значков</h3>
-          <input 
-            type="file" 
-            ref="fillAllFileInput" 
-            accept="image/jpeg,image/png,image/gif,image/webp" 
+          <input
+            type="file"
+            ref="fillAllFileInput"
+            accept="image/jpeg,image/png,image/gif,image/webp"
             @change="onFillAllImageSelect"
           >
           <div class="modal-buttons">
@@ -258,12 +261,17 @@
         @close="closeAuthModal"
         @success="onAuthSuccess"
       />
-      
+
       <ProjectsModal
         :show="showProjectsModal"
         @close="closeProjectsModal"
         @load-project="onLoadProject"
       />
+
+      <!-- ========== МОДАЛЬНОЕ ОКНО ОБРАТНОЙ СВЯЗИ ========== -->
+      <FeedbackModal :show="showFeedbackModal" @close="showFeedbackModal = false" />
+      <!-- ====================================================== -->
+
       <div v-if="notification.show" :class="['notification', notification.type]">
         {{ notification.message }}
       </div>
@@ -280,7 +288,7 @@
         <li><strong>Шаг 4:</strong> Используйте кнопку "Заполнить все", чтобы применить одно изображение ко всем значкам.</li>
         <li><strong>Шаг 5:</strong> Сохраните проект (нужна регистрация) или сразу экспортируйте в PDF.</li>
       </ul>
-      
+
       <h2>Часто задаваемые вопросы</h2>
       <ul>
         <li><strong>Нужно ли платить за использование?</strong> — Нет, конструктор полностью бесплатный.</li>
@@ -289,9 +297,9 @@
         <li><strong>Какие размеры значков доступны?</strong> — 25, 32, 34, 37, 44, 50, 58, 75 мм.</li>
         <li><strong>Можно ли скачать результат для печати?</strong> — Да, кнопка "Сохранить PDF" или "Печать A4".</li>
       </ul>
-      
+
       <p>
-        <strong>Готовый макет можно сразу отправить в печать.</strong> 
+        <strong>Готовый макет можно сразу отправить в печать.</strong>
         Если у вас остались вопросы или нужна помощь — свяжитесь с нами через форму обратной связи.
       </p>
     </div>
@@ -305,6 +313,7 @@ import jsPDF from 'jspdf'
 import ImageEditorModal from './ImageEditorModal.vue'
 import AuthModal from './AuthModal.vue'
 import ProjectsModal from './ProjectsModal.vue'
+import FeedbackModal from './FeedbackModal.vue'   // ← НОВЫЙ ИМПОРТ
 import { useAuthStore } from '../stores/authStore'
 import { useBadgeStore } from '../stores/badgeStore'
 
@@ -313,7 +322,8 @@ export default {
   components: {
     ImageEditorModal,
     AuthModal,
-    ProjectsModal
+    ProjectsModal,
+    FeedbackModal   // ← РЕГИСТРАЦИЯ КОМПОНЕНТА
   },
   data() {
     return {
@@ -328,6 +338,7 @@ export default {
       tempImageIndex: null,
       showAuthModal: false,
       showProjectsModal: false,
+      showFeedbackModal: false,   // ← НОВОЕ СОСТОЯНИЕ
       circleSizePx: 166,
       notification: {
         show: false,
@@ -366,19 +377,19 @@ export default {
     configKey() {
       return `${this.currentDiameter}_${this.currentOrientation}`
     },
-    
+
     gridCols() {
       return this.configs[this.configKey]?.cols || 3
     },
-    
+
     gridRows() {
       return this.configs[this.configKey]?.rows || 3
     },
-    
+
     totalCircles() {
       return this.configs[this.configKey]?.total || 12
     },
-    
+
     wrapperStyle() {
       return {
         display: 'grid',
@@ -394,7 +405,7 @@ export default {
         minHeight: this.currentOrientation === 'landscape' ? '180mm' : '257mm'
       }
     },
-    
+
     cellStyle() {
       return {
         width: `${this.circleSizePx}px`,
@@ -404,7 +415,7 @@ export default {
         margin: '5px'
       }
     },
-    
+
     outerStyle() {
       return {
         width: '100%',
@@ -414,7 +425,7 @@ export default {
         boxSizing: 'border-box'
       }
     },
-    
+
     innerStyle() {
       const innerSize = this.circleSizePx * 0.76
       const offset = this.circleSizePx * 0.12
@@ -433,7 +444,7 @@ export default {
         overflow: 'hidden'
       }
     },
-    
+
     isAuthenticated() {
       const authStore = useAuthStore()
       return authStore.isAuthenticated
@@ -441,7 +452,7 @@ export default {
   },
   mounted() {
     const badgeStore = useBadgeStore()
-    
+
     // Если есть текущий проект в store - загружаем его
     if (badgeStore.currentProject && Object.keys(badgeStore.images).length > 0) {
       this.images = badgeStore.images
@@ -456,9 +467,9 @@ export default {
       this.updateCircleSize()
       console.log('Создан новый проект')
     }
-    
+
     this.checkAuth()
-    
+
     // Следим за изменениями в store
     this.$watch(() => badgeStore.currentProject, (newVal) => {
       if (newVal) {
@@ -488,7 +499,7 @@ export default {
       this.circleSizePx = Math.round(this.currentDiameter * 3.78)
       console.log('Размер круга:', this.circleSizePx, 'px для', this.currentDiameter, 'мм')
     },
-    
+
     async checkAuth() {
       const authStore = useAuthStore()
       if (authStore.token) {
@@ -496,12 +507,12 @@ export default {
         await this.loadProjectsFromServer()
       }
     },
-    
+
     async loadProjectsFromServer() {
       const badgeStore = useBadgeStore()
       await badgeStore.loadProjects()
     },
-    
+
     changeConfig(diameter, orientation) {
       if (this.currentDiameter === diameter && this.currentOrientation === orientation) return
       console.log('Смена:', diameter, 'мм,', orientation)
@@ -511,45 +522,45 @@ export default {
       this.images = {}
       //this.saveToBackend()
     },
-    
+
     openEditor(index) {
       console.log('Открыт редактор для индекса:', index)
       this.currentIndex = index
       this.modalVisible = true
     },
-    
+
     closeModal() {
       this.modalVisible = false
     },
-    
+
     openFillAllModal() {
       this.fillAllModalVisible = true
     },
-    
+
     closeFillAllModal() {
       this.fillAllModalVisible = false
     },
-    
+
     openAuthModal() {
       this.showAuthModal = true
     },
-    
+
     closeAuthModal() {
       this.showAuthModal = false
     },
-    
+
     openProjectsModal() {
       this.showProjectsModal = true
     },
-    
+
     closeProjectsModal() {
       this.showProjectsModal = false
     },
-    
+
     goToProfile() {
       this.$router.push('/profile')
     },
-    
+
     createNewProject() {
       const badgeStore = useBadgeStore()
       badgeStore.createNewProject()
@@ -560,57 +571,57 @@ export default {
       this.$forceUpdate()
       console.log('Создан новый проект')
     },
-    
+
     async logout() {
       const authStore = useAuthStore()
       authStore.logout()
       this.showAuthModal = false
       this.showProjectsModal = false
     },
-    
+
     onImageSelect(e) {
       const file = e.target.files[0]
       const savedIndex = this.currentIndex
-      
+
       console.log('Выбран файл для индекса:', savedIndex)
-      
+
       if (!file) {
         this.modalVisible = false
         this.currentIndex = null
         return
       }
-      
+
       if (!file.type.startsWith('image/')) {
         alert('Пожалуйста, выберите изображение (JPG, PNG, GIF)')
         this.modalVisible = false
         this.currentIndex = null
         return
       }
-      
+
       const reader = new FileReader()
-      
+
       reader.onload = (event) => {
         this.tempImageData = event.target.result
         this.tempImageIndex = savedIndex
         this.modalVisible = false
         this.showImageEditor = true
       }
-      
+
       reader.onerror = (err) => {
         console.error('Ошибка чтения файла:', err)
         alert('Ошибка при чтении файла')
       }
-      
+
       reader.readAsDataURL(file)
       this.currentIndex = null
     },
-    
+
     closeImageEditor() {
       this.showImageEditor = false
       this.tempImageIndex = null
       this.tempImageData = null
     },
-    
+
     applyEditedImage(data) {
       if (this.tempImageIndex !== null) {
         if (data.fillMode === 'all') {
@@ -630,42 +641,42 @@ export default {
         console.log('Изображение добавлено. Нажмите "Сохранить" для сохранения проекта.')
       }
       this.closeImageEditor()
-      
+
     },
-    
+
     onFillAllImageSelect(e) {
       const file = e.target.files[0]
-      
+
       console.log('Выбран файл для заполнения всех кругов:', file?.name)
-      
+
       if (!file) {
         this.closeFillAllModal()
         return
       }
-      
+
       if (!file.type.startsWith('image/')) {
         alert('Пожалуйста, выберите изображение (JPG, PNG, GIF)')
         this.closeFillAllModal()
         return
       }
-      
+
       const reader = new FileReader()
-      
+
       reader.onload = (event) => {
         this.tempImageData = event.target.result
         this.tempImageIndex = 0
         this.closeFillAllModal()
         this.showImageEditor = true
       }
-      
+
       reader.onerror = (err) => {
         console.error('Ошибка чтения файла:', err)
         alert('Ошибка при чтении файла')
       }
-      
+
       reader.readAsDataURL(file)
     },
-    
+
     handleImageError(index) {
       console.error('Ошибка загрузки изображения для индекса:', index)
       const newImages = { ...this.images }
@@ -681,13 +692,13 @@ export default {
         this.openAuthModal()
         return
       }
-      
+
       const saveBtn = document.querySelector('.save-btn')
       if (saveBtn) {
         const originalText = saveBtn.textContent
         saveBtn.textContent = '💾 Сохранение...'
         saveBtn.disabled = true
-        
+
         try {
           const result = await this.saveToBackend()
           if (result && result.success) {
@@ -704,14 +715,14 @@ export default {
         }
       }
     },
-    
+
     async exportPDF() {
       const element = this.$refs.a4page
       if (!element) {
         alert('Не найден элемент для печати')
         return
       }
-      
+
       try {
         const canvas = await html2canvas(element, {
           scale: 3,
@@ -719,27 +730,27 @@ export default {
           logging: false,
           useCORS: true
         })
-        
+
         const imgData = canvas.toDataURL('image/png')
-        
+
         let pdfOrientation = 'portrait'
         let pdfWidth = 210
         let pdfHeight = 297
-        
+
         if (this.currentOrientation === 'landscape') {
           pdfOrientation = 'landscape'
           pdfWidth = 297
           pdfHeight = 210
         }
-        
+
         console.log('Создание PDF с ориентацией:', pdfOrientation, 'размер:', pdfWidth, 'x', pdfHeight)
-        
+
         const pdf = new jsPDF({
           unit: 'mm',
           format: 'a4',
           orientation: pdfOrientation
         })
-        
+
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
         pdf.save(`badge_${this.currentDiameter}mm_${this.currentOrientation}.pdf`)
         console.log('PDF сохранён, ориентация:', pdfOrientation)
@@ -748,11 +759,11 @@ export default {
         alert('Ошибка создания PDF: ' + err.message)
       }
     },
-    
+
     printPage() {
       window.print()
     },
-    
+
     clearAll() {
       if (confirm('Очистить все изображения?')) {
         this.images = {}
@@ -761,26 +772,26 @@ export default {
         console.log('Все изображения очищены')
       }
     },
-    
+
     async saveToBackend() {
       // Проверка авторизации
       if (!this.isAuthenticated) {
         console.log('Сохранение доступно только авторизованным пользователям')
         return { success: false, local: false, error: 'Not authenticated' }
       }
-      
+
       const badgeStore = useBadgeStore()
       badgeStore.images = this.images
       badgeStore.currentDiameter = this.currentDiameter
       badgeStore.currentOrientation = this.currentOrientation
-      
+
       const result = await badgeStore.saveProject({
         name: `Проект от ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`,
         diameter: this.currentDiameter,
         orientation: this.currentOrientation,
         images: this.images
       })
-      
+
       if (result.success && !result.local) {
         console.log('Проект сохранён на сервере')
         await badgeStore.loadProjects()
@@ -791,29 +802,29 @@ export default {
       }
       return { success: false, local: false }
     },
-    
+
     onAuthSuccess() {
       this.showAuthModal = false
       //this.saveToBackend()
       this.loadProjectsFromServer()
     },
-    
+
     onLoadProject(project) {
       console.log('Загрузка проекта из модалки:', project.name)
-      
+
       // Загружаем данные проекта
       this.images = project.shapes_data || {}
       this.currentDiameter = project.diameter_mm
       this.currentOrientation = project.orientation
       this.updateCircleSize()
-      
+
       // Сохраняем в store
       const badgeStore = useBadgeStore()
       badgeStore.currentProject = project
       badgeStore.images = this.images
       badgeStore.currentDiameter = this.currentDiameter
       badgeStore.currentOrientation = this.currentOrientation
-      
+
       this.$forceUpdate()
       console.log('Проект загружен, изображений:', Object.keys(this.images).length)
     }
@@ -975,6 +986,23 @@ export default {
   background: #616161;
 }
 
+/* ========== СТИЛЬ КНОПКИ ОБРАТНОЙ СВЯЗИ ========== */
+.feedback-btn {
+  background: #FF5722;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.feedback-btn:hover {
+  background: #E64A19;
+}
+/* ================================================= */
+
 .warning {
   background: #fff3cd;
   color: #856404;
@@ -1101,7 +1129,7 @@ export default {
   .header, .modal, .debug-panel {
     display: none !important;
   }
-  
+
   .a4-page {
     padding: 0;
     margin: 0;
@@ -1217,5 +1245,4 @@ export default {
     font-size: 14px;
   }
 }
-
 </style>

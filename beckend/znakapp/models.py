@@ -106,3 +106,104 @@ class BadgeProject(models.Model):
     
     def __str__(self):
         return f"{self.name} - {self.user.username}"
+
+
+# создаем админку самостоятельно
+# ========== НОВЫЕ МОДЕЛИ ДЛЯ АНАЛИТИКИ И ОБРАТНОЙ СВЯЗИ ==========
+
+class SiteVisit(models.Model):
+    ''' модель посещения сайта'''
+    ip_address = models.GenericIPAddressField('IP-адрес', null=True, blank=True)
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True, related_name='visit', verbose_name='Пользователь'
+    )
+    path = models.CharField('Путь', max_length=500)
+    method = models.CharField('HTTP метод', max_length=10, default='GET')
+    user_agent = models.TextField('User-Agent', blank=True)
+    referer =models.URLField('Источник перехода', max_length=500, blank=True)
+    session_key = models.CharField('Ключ сессии', max_length=40, blank=True)
+    screen_resolution = models.CharField('Разрешение эклана', max_length=20, blank=True)
+    language = models.CharField('Язык браузера', max_length=20, blank=True)
+    country = models.CharField('Страна', max_length=100, blank=True)
+    city = models.CharField('Город', max_length=100, blank=True)
+    is_mobile = models.BooleanField('Мобильное устройство', default=False)
+    browser = models.CharField('Браузер', max_length=100, blank=True)
+    os = models.CharField('ОС', max_length=100, blank=True)
+    response_time_ms = models.IntegerField('Время ответа (мс)', null=True, blank=True)
+    status_code = models.IntegerField('HTTP статус', null=True, blank=True)
+    created_at = models.DateTimeField('Дата и время', auto_now_add=True, db_index=True)
+
+    class Meta:
+        verbose_name = 'Посещение'
+        verbose_name_plural = 'Посещения'
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['-created_at']),
+            models.Index(fields=['ip_address']),
+            models.Index(fields=['path']),
+        ]
+
+    def __str__(self):
+        user_str = self.user.username if self.user else 'Ананим'
+        return f"{user_str} - {self.path} ({self.created_at.strftime('%d.%m.%Y %H:%M')})"
+
+class Feedback(models.Model):
+    '''Модель обратной связи'''
+    STATUS_CHOICES = [
+        ('new', 'Новое'),
+        ('in_progress', 'В обработке'),
+        ('resolved', 'Решено'),
+        ('rejected', 'Отклонено'),        # ← было 'rejectet'
+    ]
+
+    PRIORITY_CHOICES = [
+        ('low', 'Низкий'),
+        ('medium', 'Средний'),
+        ('high', 'Высокий'),
+        ('critical', 'Критический'),
+    ]
+
+    CATEGORY_CHOICES = [
+        ('question', 'Вопрос'),
+        ('bug', 'Ошибка'),
+        ('suggestion', 'Предложение'),
+        ('complaint', 'Жалоба'),
+        ('other', 'Другое'),
+    ]
+
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='feedbacks', verbose_name='Пользователь'
+    )
+    name = models.CharField('Имя', max_length=100)
+    email = models.EmailField('Email')
+    phone = models.CharField('Телефон', max_length=20, blank=True)
+    category = models.CharField('Категория', max_length=20,
+                                choices=CATEGORY_CHOICES, default='question')
+    priority = models.CharField('Приоритет', max_length=20,
+                                choices=PRIORITY_CHOICES, default='medium')  # ← добавлено
+    subject = models.CharField('Тема', max_length=200)
+    message = models.TextField('Сообщение')
+    status = models.CharField('Статус', max_length=20,
+                              choices=STATUS_CHOICES, default='new')         # ← было 'medium'
+
+    ip_address = models.GenericIPAddressField('IP-адрес', null=True, blank=True)
+    user_agent = models.TextField('User-Agent', blank=True)
+
+    admin_response = models.TextField('Ответ администратора', blank=True)
+    responded_at = models.DateTimeField('Дата ответа', null=True, blank=True)
+    responded_by = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='responded_feedbacks', verbose_name='Ответил'
+    )
+
+    created_at = models.DateTimeField('Дата создания', auto_now_add=True)
+    updated_at = models.DateTimeField('Дата обновления', auto_now=True)
+
+    class Meta:
+        verbose_name = 'Обратная связь'
+        verbose_name_plural = 'Обратная связь'      # ← было 'Обрантая связь'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.name} - {self.subject} ({self.get_status_display()})"

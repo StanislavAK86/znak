@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Category, Sign, Quiz, QuizResult, BadgeProject
+from .models import SiteVisit, Feedback
 
 class UserSerializer(serializers.ModelSerializer):
     """Сериализатор пользователя"""
@@ -72,3 +73,42 @@ class BadgeProjectCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = BadgeProject
         fields = ['name', 'shape_type', 'diameter_mm', 'orientation', 'shapes_data']
+
+
+class SiteVisitSerializer(serializers.ModelSerializer):
+    """Сериализатор посещения"""
+    username = serializers.CharField(source='user.username', read_only=True)
+
+    class Mete:
+        model = SiteVisit
+        fields = [
+            'id', 'ip_address', 'user', 'username', 'path', 'method',
+            'user_agent', 'referer', 'browser', 'os', 'is_mobile',
+            'response_time_ms', 'status_code', 'created_at'
+        ]
+
+class FeedbackSerializer(serializers.ModelSerializer):
+    """Сериализатор обратной связи"""
+    username = serializers.CharField(source='user.username', read_only=True)
+    status_display = serializers.CharField(source='get_status_display', read_only=True)
+    category_display = serializers.CharField(source='get_category_display', read_only=True)
+
+    class Meta:
+        model = Feedback
+        fields = [
+            'id', 'user', 'username', 'name', 'email', 'phone',
+            'category', 'category_display', 'subject', 'message',
+            'status', 'status_display', 'priority',
+            'admin_response', 'created_at', 'updated_at'
+        ]
+
+class FeedbackCreateSerializer(serializers.ModelSerializer):
+    """Сериализатор создания обратной связи (публичный)"""
+    class Meta:
+        model = Feedback
+        fields = ['name', 'email', 'phone', 'category', 'subject', 'message']
+
+    def validate_messadge(self, value):
+        if len(value) < 10:
+            raise serializers.ValidationError('Сообщение должно быть не мение 10 символов')
+        return value
