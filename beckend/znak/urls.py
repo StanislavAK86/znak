@@ -4,8 +4,6 @@ from znakapp.admin_dashboard import dashboard_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('znakapp.urls')),  # Все API будут доступны по префиксу /api/
     path('admin/dashboard/', dashboard_view, name='admin-dashboard'),
-    path('admin/', admin.site.urls),
     path('api/', include('znakapp.urls')),
 ]
