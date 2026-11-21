@@ -14,7 +14,7 @@ services:
       - DEBUG=False
       - DOCKER_ENV=True
       - PRODUCTION=True
-      - ALLOWED_HOSTS=test.zastava-86.ru,localhost,127.0.0.1
+      - ALLOWED_HOSTS=znak.it-apt.ru,localhost,127.0.0.1
       - DATA_UPLOAD_MAX_SIZE=52428800
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000"]
@@ -26,7 +26,7 @@ services:
     build:
       context: ./frontend
       args:
-        - VUE_APP_API_URL=https://test.zastava-86.ru/api/
+        - VUE_APP_API_URL=https://znak.it-apt.ru/api/
     container_name: znak_frontend
     restart: unless-stopped
     ports:
