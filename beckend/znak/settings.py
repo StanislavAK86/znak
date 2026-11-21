@@ -17,10 +17,10 @@ SECRET_KEY = 'django-insecure-il(8xbt6kfe7*-e9%=1rik3aq_f*q9qrztxl(snq6e-civfxy1
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Разрешенные хосты
-ALLOWED_HOSTS = ['test.zastava-86.ru', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['znak.it-atp.ru', 'localhost', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = [
-    "https://test.zastava-86.ru",
-    "http://test.zastava-86.ru",
+    "https://znak.it-atp.ru",
+    "http://znak.it-atp.ru",
 ]
 # Application definition
 INSTALLED_APPS = [
@@ -148,8 +148,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:8080",
     "http://127.0.0.1:5173",
-    "https://test.zastava-86.ru",
-    "http://test.zastava-86.ru",
+    "https://znak.it-atp.ru",
+    "http://znak.it-atp.ru",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
