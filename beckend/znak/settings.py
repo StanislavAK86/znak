@@ -17,7 +17,7 @@ SECRET_KEY = 'django-insecure-il(8xbt6kfe7*-e9%=1rik3aq_f*q9qrztxl(snq6e-civfxy1
 DEBUG = True
 
 # Разрешенные хосты
-ALLOWED_HOSTS = ['znak.it-atp.ru', 'localhost', '127.0.0.1', '.timeweb.app']
+ALLOWED_HOSTS = ['*']
 USE_X_FORWARDED_HOST = True
 CSRF_TRUSTED_ORIGINS = [
     "https://znak.it-atp.ru",
