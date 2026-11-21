@@ -1,18 +1,10 @@
 """
-Создайте файл znakapp/middleware.py:
 Middleware для автоматического трекинга посещений сайта.
-
-Что делает:
-1. Перехватывает каждый HTTP-запрос к сайту
-2. Собирает информацию: IP, User-Agent, путь, referer, время ответа
-3. Определяет браузер, ОС, тип устройства (мобильное/десктоп)
-4. Сохраняет в модель SiteVisit (асинхронно через поток, чтобы не тормозить)
 """
-import time 
+import time
 import threading
 import re
 from django.utils.deprecation import MiddlewareMixin
-from django.utils import timezone
 
 
 # Паттерны для определения браузера и ОС
@@ -39,10 +31,9 @@ MOBILE_PATTERN = re.compile(
     re.IGNORECASE
 )
 
+
 def parse_user_agent(user_agent):
-    """
-        Парсит User-Agent и возвращает (browser, os, is_mobile).
-    """
+    """Парсит User-Agent и возвращает (browser, os, is_mobile)."""
     if not user_agent:
         return '', '', False
 
@@ -50,104 +41,94 @@ def parse_user_agent(user_agent):
     os_name = ''
 
     for name, pattern in BROWSER_PATTERNS:
-            match = re.search(pattern, user_agent)
-            if match:
-                version = match.group(1).split('.')[0] if match.groups() else ''
-                browser = f"{name} {version}".strip()
-                break
+        match = re.search(pattern, user_agent)
+        if match:
+            version = match.group(1).split('.')[0] if match.groups() else ''
+            browser = f"{name} {version}".strip()
+            break
 
     for name, pattern in OS_PATTERNS:
-            match = re.search(pattern, user_agent)
-            if match:
-                os_name = name
-                break
-
+        match = re.search(pattern, user_agent)
+        if match:
+            os_name = name
+            break
 
     is_mobile = bool(MOBILE_PATTERN.search(user_agent))
     return browser, os_name, is_mobile
+
 
 def get_client_ip(request):
     """Получает реальный IP клиента (учитывает прокси)."""
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
-         ip = x_forwarded_for.spit(',')[0].strip()
+        ip = x_forwarded_for.split(',')[0].strip()
     else:
-         ip = request.META.get('REMOTE_ADDR')
-         return ip     
-def seve_visit_async(visit_data):
-    """
-         Сохраняет посещение в отдельном потоке,
-         чтобы не блокировать основной запрос.
-    """
-    try:
-         from .models import SiteVizit
-         SiteVizit.objects.create(**visit_data)
-    except Exception as e:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
 
-         print(f"[SiteVisit Middleware] Ошибка сохранения: {e}")
+
+def save_visit_async(visit_data):
+    """Сохраняет посещение в отдельном потоке."""
+    try:
+        from .models import SiteVisit
+        SiteVisit.objects.create(**visit_data)
+    except Exception as e:
+        print(f"[SiteVisit Middleware] Ошибка сохранения: {e}")
+
 
 class SiteVisitMiddleware(MiddlewareMixin):
-    '''Middleware для трекинга посещений.
-         
-         ВАЖНО: Не трекает:
-         - Запросы к /admin/ (чтобы не засорять статистику)
-         - Запросы к /static/ и /media/
-         - OPTIONS-запросы (CORS preflight)
-         - Запросы от ботов (можно настроить)'''
+    """Middleware для трекинга посещений."""
 
-     #Расширение файлов, которые не трекаем
     EXCLUDED_PATHS = [
-            '/admin/',
-            '/static/',
-            '/media/',
-            '/favicon.ico/',
-            '/robots.txt/',
-            '/sitemap.xml/',
+        '/admin/',
+        '/static/',
+        '/media/',
+        '/favicon.ico',
+        '/robots.txt',
+        '/sitemap.xml',
     ]
 
-    #Расширение файлов, которые не трекаем
     EXCLUDED_EXTENSIONS = [
-            '.css', '.js', '.map', '.png', '.jpg', '.jpeg',
-            '.gif', '.svg', '.ico', '.woff', '.woff2', '.ttf',
+        '.css', '.js', '.map', '.png', '.jpg', '.jpeg',
+        '.gif', '.svg', '.ico', '.woff', '.woff2', '.ttf',
     ]
 
     BOT_PATTERNS = [
-            'bot', 'crawler', 'spider', 'yandex', 'google',
-            'bing', 'baidu', 'duckduck', 'facebookexternalhit',
-            'semrush', 'ahrefs', 'mj12bot', 'dotbot',
+        'bot', 'crawler', 'spider', 'yandex', 'google',
+        'bing', 'baidu', 'duckduck', 'facebookexternalhit',
+        'semrush', 'ahrefs', 'mj12bot', 'dotbot',
     ]
 
     def should_track(self, request):
         if request.method not in ('GET', 'POST'):
-             return False
+            return False
 
         path = request.path
 
         for excluded in self.EXCLUDED_PATHS:
-             if path.startwith(excluded):
-                  return False
+            if path.startswith(excluded):
+                return False
 
         for ext in self.EXCLUDED_EXTENSIONS:
-             if path.endswith(ext):
-                  return False
+            if path.endswith(ext):
+                return False
 
-        user_agent = request.META.det('HTTP_USER_AGENT', '').lower()
+        user_agent = request.META.get('HTTP_USER_AGENT', '').lower()
         for bot in self.BOT_PATTERNS:
-             if bot in user_agent:
-                  return False
+            if bot in user_agent:
+                return False
 
-        if path.startwith('/api/visits'):
-             return False
+        if path.startswith('/api/visits'):
+            return False
         return True
 
     def process_request(self, request):
-        '''Запоминаем время начала запроса.'''
+        """Запоминаем время начала запроса."""
         request._visit_start_time = time.time()
         return None
 
     def process_response(self, request, response):
-        '''Сохраняем данные о посещении после обработки запроса.'''
-
+        """Сохраняем данные о посещении после обработки запроса."""
         if not self.should_track(request):
             return response
 
@@ -160,23 +141,23 @@ class SiteVisitMiddleware(MiddlewareMixin):
             browser, os_name, is_mobile = parse_user_agent(user_agent)
 
             user = None
-            if hasattr(request, 'user') and request.useris_authenticated:
-                 user = request.user
+            if hasattr(request, 'user') and request.user.is_authenticated:
+                user = request.user
 
             visit_data = {
-                 'ip_address': get_client_ip(request),
-                 'user': user,
-                 'path': request.path[:500],
-                 'method': request.method,
-                 'user_agent': user_agent[:1000],
-                 'referer': request.META.get('HTTP_REFERER', '')[:500],
-                 'session_key':request.session.session_key or '',
-                 'language': request.META.get('HTTP_ACCEPT_LANGUAGE', ''[:20]),
-                 'is_mobile': is_mobile,
-                 'browser': browser[:100],
-                 'os': os_name[:100],
-                 'response_time_ms': response_time_ms,
-                 'status_code': response.status.code,
+                'ip_address': get_client_ip(request),
+                'user': user,
+                'path': request.path[:500],
+                'method': request.method,
+                'user_agent': user_agent[:1000],
+                'referer': request.META.get('HTTP_REFERER', '')[:500],
+                'session_key': request.session.session_key or '',
+                'language': request.META.get('HTTP_ACCEPT_LANGUAGE', '')[:20],
+                'is_mobile': is_mobile,
+                'browser': browser[:100],
+                'os': os_name[:100],
+                'response_time_ms': response_time_ms,
+                'status_code': response.status_code,
             }
 
             thread = threading.Thread(target=save_visit_async, args=(visit_data,))
@@ -184,7 +165,6 @@ class SiteVisitMiddleware(MiddlewareMixin):
             thread.start()
 
         except Exception as e:
-             print(f"[SiteVisit Middleware] Ошибка: {e}")
+            print(f"[SiteVisit Middleware] Ошибка: {e}")
 
         return response
-           
