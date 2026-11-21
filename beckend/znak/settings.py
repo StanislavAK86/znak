@@ -22,6 +22,8 @@ USE_X_FORWARDED_HOST = True
 CSRF_TRUSTED_ORIGINS = [
     "https://znak.it-atp.ru",
     "http://znak.it-atp.ru",
+    "https://stanislavak86-znak-5aac.twc1.net",
+    "https://*.twc1.net",
 ]
 # Application definition
 INSTALLED_APPS = [
