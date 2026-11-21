@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-il(8xbt6kfe7*-e9%=1rik3aq_f*q9qrztxl(snq6e-civfxy1
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Определяем через переменную окружения для гибкости
-DEBUG =True
+DEBUG = True
 
 # Разрешенные хосты
 ALLOWED_HOSTS = ['znak.it-atp.ru', 'localhost', '127.0.0.1', '.timeweb.app']
