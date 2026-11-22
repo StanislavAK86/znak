@@ -4,7 +4,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - VUE_APP_API_URL=https://znak.it-apt.ru/api/
+        - VUE_APP_API_URL=/api/
     container_name: znak_frontend
     restart: unless-stopped
     ports:
