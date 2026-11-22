@@ -11,7 +11,7 @@ services:
       - DEBUG=False
       - DOCKER_ENV=True
       - PRODUCTION=True
-      - ALLOWED_HOSTS=znak.it-apt.ru,localhost,127.0.0.1
+      - ALLOWED_HOSTS=znak.it-apt.ru,localhost,127.0.0.1,stanislavak86-znak-c432.twc1.net
       - DATA_UPLOAD_MAX_SIZE=52428800
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000"]
