@@ -194,7 +194,7 @@
             {% for day in visits_by_day %}
             <div class="chart-bar-wrapper">
                 <div class="chart-bar-value">{{ day.count }}</div>
-                <div class="chart-bar" style="height: {% widthratio day.count 1 1 %}%; min-height: 4px;"></div>
+                <div class="chart-bar" style="height: {% widthratio day.count max_visits 100 %}%; min-height: 4px;"></div>
                 <div class="chart-bar-label">{{ day.date }}</div>
             </div>
             {% endfor %}
