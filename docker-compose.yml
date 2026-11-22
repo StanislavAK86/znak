@@ -1,13 +1,10 @@
 services:
   backend:
-    build: .
+    build:
+      context: ./beckend
+      dockerfile: Dockerfile
     container_name: znak_backend
     restart: unless-stopped
-    # volumes:  <-- ЭТУ СЕКЦИЮ, СКОРЕЕ ВСЕГО, НУЖНО УБРАТЬ ИЛИ ПЕРЕДЕЛАТЬ
-    #   - ./beckend:/app
-    #   - sqlite_data:/app/beckend
-    #   - static_volume:/app/static
-    #   - media_volume:/app/media
     ports:
       - "8001:8000"
     environment:
@@ -25,16 +22,12 @@ services:
   frontend:
     build:
       context: ./frontend
+      dockerfile: Dockerfile
       args:
         - VUE_APP_API_URL=https://znak.it-apt.ru/api/
     container_name: znak_frontend
     restart: unless-stopped
     ports:
-      - "8080:80" # Убедитесь, что 8080 свободен на сервере, но это не 80/443 — ок
+      - "8080:80"
     depends_on:
       - backend
-
-# volumes:  <-- ЭТОТ БЛОК НУЖНО УДАЛИТЬ ПОЛНОСТЬЮ
-#   static_volume:
-#   media_volume:
-#   sqlite_data:
