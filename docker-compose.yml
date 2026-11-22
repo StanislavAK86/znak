@@ -1,8 +1,8 @@
 services:
   backend:
     build:
-      context: ./beckend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: beckend/Dockerfile
     container_name: znak_backend
     restart: unless-stopped
     ports:
