@@ -73,7 +73,7 @@
 <script>
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://test.zastava-86.ru/api'
+const API_URL = (process.env.VUE_APP_API_URL || '/api').replace(/\/$/, '')
 
 export default {
   name: 'FeedbackModal',

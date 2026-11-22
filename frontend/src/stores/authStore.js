@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL || import.meta.env.VUE_APP_API_URL || 'https://test.zastava-86.ru/api/'
+// Vue CLI использует process.env.VUE_APP_*, а не import.meta.env
+// Убираем завершающий слеш, чтобы не было двойных // в путях
+const API_URL = (process.env.VUE_APP_API_URL || '/api').replace(/\/$/, '')
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -37,9 +39,9 @@ export const useAuthStore = defineStore('auth', {
         return { success: true }
       } catch (error) {
         console.error('Login error:', error)
-        return { 
-          success: false, 
-          error: error.response?.data?.detail || 'Ошибка входа' 
+        return {
+          success: false,
+          error: error.response?.data?.detail || 'Ошибка входа'
         }
       } finally {
         this.loading = false
@@ -62,9 +64,9 @@ export const useAuthStore = defineStore('auth', {
         return { success: true }
       } catch (error) {
         console.error('Register error:', error)
-        return { 
-          success: false, 
-          error: error.response?.data?.error || 'Ошибка регистрации' 
+        return {
+          success: false,
+          error: error.response?.data?.error || 'Ошибка регистрации'
         }
       } finally {
         this.loading = false
