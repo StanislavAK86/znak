@@ -5,26 +5,23 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 WORKDIR /app
 
-# Устанавливаем системные зависимости
+# Системные зависимости
 RUN apt-get update && apt-get install -y \
     gcc \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Копируем requirements из папки beckend
+# Python-зависимости
 COPY beckend/requirements.txt .
-
-# Устанавливаем Python зависимости
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install gunicorn
 
-# Копируем весь backend
+# Код проекта
 COPY beckend/ .
 
-# Создаем папки для статики
-RUN mkdir -p static media
+# Сбор статики в STATIC_ROOT
+RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-# Запускаем Django
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "znak.wsgi:application"]
