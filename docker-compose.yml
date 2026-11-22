@@ -3,11 +3,11 @@ services:
     build: .
     container_name: znak_backend
     restart: unless-stopped
-    volumes:
-      - ./beckend:/app
-      - sqlite_data:/app/beckend
-      - static_volume:/app/static
-      - media_volume:/app/media
+    # volumes:  <-- ЭТУ СЕКЦИЮ, СКОРЕЕ ВСЕГО, НУЖНО УБРАТЬ ИЛИ ПЕРЕДЕЛАТЬ
+    #   - ./beckend:/app
+    #   - sqlite_data:/app/beckend
+    #   - static_volume:/app/static
+    #   - media_volume:/app/media
     ports:
       - "8001:8000"
     environment:
@@ -30,11 +30,11 @@ services:
     container_name: znak_frontend
     restart: unless-stopped
     ports:
-      - "8080:80"
+      - "8080:80" # Убедитесь, что 8080 свободен на сервере, но это не 80/443 — ок
     depends_on:
       - backend
 
-volumes:
-  static_volume:
-  media_volume:
-  sqlite_data:
+# volumes:  <-- ЭТОТ БЛОК НУЖНО УДАЛИТЬ ПОЛНОСТЬЮ
+#   static_volume:
+#   media_volume:
+#   sqlite_data:
