@@ -108,12 +108,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ========== СТАТИКА И МЕДИА ФАЙЛЫ ==========
 # Определяем пути в зависимости от окружения
 STATIC_URL = '/static/'
-if os.getenv('DOCKER_ENV', 'False') == 'True':
-    STATIC_ROOT = '/app/static'
-    MEDIA_ROOT = '/app/media'
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 
