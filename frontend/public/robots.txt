@@ -3,5 +3,5 @@ Allow: /
 Disallow: /profile
 Disallow: /auth
 
-Sitemap: https://test.zastava-86.ru/sitemap.xml
-Host: https://test.zastava-86.ru
+Sitemap: https://znak.it-atp.ru/sitemap.xml
+Host: https://znak.it-atp.ru
