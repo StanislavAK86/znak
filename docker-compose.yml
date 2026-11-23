@@ -1,3 +1,5 @@
+name: znak
+
 services:
   frontend:
     build:
@@ -7,10 +9,14 @@ services:
         - VUE_APP_API_URL=/api/
     container_name: znak_frontend
     restart: unless-stopped
+    expose:
+      - "80"
     ports:
-      - "8080:80"
+      - "8080:80"            # для отладки, потом убрать
     depends_on:
       - backend
+    networks:
+      - znak_network
 
   backend:
     build:
@@ -18,16 +24,25 @@ services:
       dockerfile: beckend/Dockerfile
     container_name: znak_backend
     restart: unless-stopped
-    ports:
-      - "8001:8000"
+    expose:
+      - "8000"               # наружу НЕ публикуем
+    volumes:
+      - ./beckend/db.sqlite3:/app/db.sqlite3   # персистим БД
     environment:
       - DEBUG=False
       - DOCKER_ENV=True
       - PRODUCTION=True
-      - ALLOWED_HOSTS=znak.it-apt.ru,localhost,127.0.0.1,stanislavak86-znak-c432.twc1.net
+      - ALLOWED_HOSTS=znak.it-atp.ru,localhost,127.0.0.1,stanislavak86-znak-c432.twc1.net
       - DATA_UPLOAD_MAX_SIZE=52428800
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.settimeout(5); s.connect(('127.0.0.1',8000)); s.close()"]
       interval: 30s
       timeout: 10s
       retries: 3
+    networks:
+      - znak_network
+
+networks:
+  znak_network:
+    name: znak_network
+    driver: bridge
